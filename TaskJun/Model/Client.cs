@@ -47,6 +47,26 @@ namespace TaskJun.Model
             }
         }
 
+        public string Color
+        {
+            get
+            {
+                string success = "#00CC00";
+                string fail = "#FF0000";
+                int temp = MaxSteps / AverageSteps;
+                if ((float)MaxSteps / (float)AverageSteps * 100 > 120)
+                {
+                    return success;
+                }
+                if((float)MinSteps / (float)AverageSteps * 100 < 80)
+                {
+                    return fail;
+                }
+                return "";
+            }
+            
+        }
+
         public Client(ClientDay client, int day)
         {
             user = client.User;

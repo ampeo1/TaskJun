@@ -8,9 +8,22 @@
         Title="MainWindow" Height="450" Width="800">
     <DockPanel>
         <ListView DockPanel.Dock="Left" ItemsSource="{Binding Clients}">
+           <!-- <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Label Content="{Binding User}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>-->
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=User}">ФИО</GridViewColumn>
+                    <GridViewColumn Header="ФИО" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding User}" Foreground="{Binding Color}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=AverageSteps}">Среднее кол-во шагов</GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=MaxSteps}">Макс шагов</GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=MinSteps}">Мин шагов</GridViewColumn>
