@@ -8,6 +8,12 @@ namespace TaskJun.Model
 {
     class Client
     {
+        public Client(ClientDay client, int day)
+        {
+            user = client.User;
+            days.Add(day, client);
+        }
+
         private string user;
         public string User {
             get
@@ -16,8 +22,8 @@ namespace TaskJun.Model
             }
         }
 
-        private Dictionary<int, ClientDay> days = new Dictionary<int, ClientDay>();
-        public Dictionary<int, ClientDay> Days
+        private SortedDictionary<int, ClientDay> days = new SortedDictionary<int, ClientDay>();
+        public SortedDictionary<int, ClientDay> Days
         {
             get
             {
@@ -62,19 +68,25 @@ namespace TaskJun.Model
                 {
                     return fail;
                 }
-                return "";
+                return "#000";
             }
             
         }
-
-        public Client(ClientDay client, int day)
-        {
-            user = client.User;
-            Days[day] = client;
-        }
         public void Update(ClientDay clientDay, int day)
         {
-            days[day] = clientDay;
+            days.Add(day, clientDay);
+        }
+
+        public List<int> GetSteps()
+        {
+            List<int> steps = Days.Values.Select(o => o.Steps).ToList();
+            return steps;
+        }
+
+        public List<int> GetDays()
+        {
+            List<int> days = Days.Keys.ToList();
+            return days;
         }
     }
 }

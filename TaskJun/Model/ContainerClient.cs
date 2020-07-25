@@ -14,6 +14,7 @@ namespace TaskJun.Model
         {
             List<Client> clients = new List<Client>();
             Dictionary<int, List<ClientDay>> data = WorkFiles.GetData();
+            //Отсортировать по ключу 
             foreach (int day in data.Keys)
             {
                 foreach (ClientDay clientDay in data[day])
