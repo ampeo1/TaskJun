@@ -49,7 +49,7 @@ namespace TaskJun.Model
         {
             get
             {
-                return Days.Values.Sum(client => client.Steps) / Days.Count;
+                return (int)Days.Values.Average(client => client.Steps);
             }
         }
 

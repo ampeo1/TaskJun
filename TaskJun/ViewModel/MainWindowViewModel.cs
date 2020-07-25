@@ -6,10 +6,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Microsoft.Win32;
 using TaskJun.Model;
 
 
@@ -19,9 +21,9 @@ namespace TaskJun.ViewModel
     {
         public MainWindowViewModel()
         {
-            Clients = new ObservableCollection<Client>(ContainerClient.GetClients());
+            Clients = new ContainerClient();
         }
-        public ObservableCollection<Client> Clients { get; set; }
+        public ContainerClient Clients { get; set; }
         public Client selectedClient = null;
         public Client SelectedClient
         {
@@ -53,7 +55,7 @@ namespace TaskJun.ViewModel
                         }
                     };
                 }
-                catch(NullReferenceException)
+                catch (NullReferenceException)
                 {
                     return null;
                 }
@@ -64,7 +66,7 @@ namespace TaskJun.ViewModel
         {
             get
             {
-                try{
+                try {
                     return selectedClient.GetDays().Select(day => day.ToString()).ToArray();
                 }
                 catch (NullReferenceException)
@@ -79,6 +81,50 @@ namespace TaskJun.ViewModel
             get
             {
                 return value => value.ToString();
+            }
+        }
+
+        private RelayCommand saveUser;
+        public RelayCommand SaveUser
+        {
+            get
+            {
+                return saveUser ?? (saveUser = new RelayCommand(obj =>
+                {
+                    if (selectedClient != null)
+                    {
+                        SaveFileDialog saveFileDialog = new SaveFileDialog();
+                        saveFileDialog.Filter = "Json file (*.json)|*.json";
+                        saveFileDialog.FileName = selectedClient.User;
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            WorkFiles.SaveUser(selectedClient, saveFileDialog.FileName);
+                        }
+                        MessageBox.Show("Вы сохранили пользователя");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Вы не выбрали пользователя, которого хотите сохранить");
+                    }
+                }));
+            }
+        }
+
+        private RelayCommand addUsers;
+        public RelayCommand AddUsers
+        {
+            get
+            {
+                return addUsers ?? (addUsers = new RelayCommand(obj =>
+                {
+                    OpenFileDialog openFileDialog = new OpenFileDialog();
+                    openFileDialog.Multiselect = true;
+                    if(openFileDialog.ShowDialog() == true)
+                    {
+                        Clients.AddClients(openFileDialog.FileNames);
+                        OnPropertyChanged("Clients");
+                    }
+                }));
             }
         }
 

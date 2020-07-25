@@ -8,7 +8,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel>
-        <ListView DockPanel.Dock="Left" ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedClient}">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <Button Content="Сохранить выбранного пользователя" Command="{Binding SaveUser}"/>
+            <Button Content="Открыть файл" Command="{Binding AddUsers}"/>
+        </StackPanel>
+        <ListView DockPanel.Dock="Left" ItemsSource="{Binding Clients.Clients, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedClient}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ФИО" >

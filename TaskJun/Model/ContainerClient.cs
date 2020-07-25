@@ -10,11 +10,22 @@ namespace TaskJun.Model
 {
     class ContainerClient
     {
-        public static List<Client> GetClients()
+        public ContainerClient()
         {
-            List<Client> clients = new List<Client>();
-            Dictionary<int, List<ClientDay>> data = WorkFiles.GetData();
-            //Отсортировать по ключу 
+            Dictionary<int, List<ClientDay>> data = WorkFiles.GetTest();
+            Update(data);
+        }
+        private List<Client> clients = new List<Client>();
+
+        public ObservableCollection<Client> Clients
+        {
+            get
+            {
+                return new ObservableCollection<Client>(clients);
+            }
+        }
+        public void Update(Dictionary<int, List<ClientDay>> data)
+        {
             foreach (int day in data.Keys)
             {
                 foreach (ClientDay clientDay in data[day])
@@ -26,7 +37,11 @@ namespace TaskJun.Model
                         clients.Add(new Client(clientDay, day));
                 }
             }
-            return clients;
+        }
+
+        public void AddClients(string[] FileNames) {
+            Dictionary<int, List<ClientDay>> data = WorkFiles.OpenFiles(FileNames);
+            Update(data);
         }
     }
 }
