@@ -22,15 +22,6 @@ namespace TaskJun.Model
             }
         }
 
-        private SortedDictionary<int, ClientDay> days = new SortedDictionary<int, ClientDay>();
-        public SortedDictionary<int, ClientDay> Days
-        {
-            get
-            {
-                return days;
-            }
-        }
-
         public int MaxSteps {
             get
             {
@@ -53,13 +44,21 @@ namespace TaskJun.Model
             }
         }
 
+        private SortedDictionary<int, ClientDay> days = new SortedDictionary<int, ClientDay>();
+        public SortedDictionary<int, ClientDay> Days
+        {
+            get
+            {
+                return days;
+            }
+        }
+
         public string Color
         {
             get
             {
                 string success = "#00CC00";
                 string fail = "#FF0000";
-                int temp = MaxSteps / AverageSteps;
                 if ((float)MaxSteps / (float)AverageSteps * 100 > 120)
                 {
                     return success;

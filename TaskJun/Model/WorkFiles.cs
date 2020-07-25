@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using TaskJun.Model;
 
 namespace TaskJun.ViewModel
@@ -29,7 +30,20 @@ namespace TaskJun.ViewModel
                         fileStream.Read(array, 0, array.Length);
                         clients = Encoding.UTF8.GetString(array);
                     }
-                    data[day] = JsonConvert.DeserializeObject<List<ClientDay>>(clients);
+                    try
+                    {
+                        data[day] = JsonConvert.DeserializeObject<List<ClientDay>>(clients);
+                    }
+                    catch (JsonException)
+                    {
+                        MessageBox.Show($"Проблемы с файлом {file.Name}");
+                    }
+                    
+                }
+                else
+                {
+                    MessageBox.Show("Имя файла должно быть вида \"day(номер дня).json\"");
+                    return data;
                 }
             }
             return data;
@@ -55,10 +69,6 @@ namespace TaskJun.ViewModel
         public static void SaveUser(Client client, string path)
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(path);
-            if (!directoryInfo.Exists)
-            {
-                directoryInfo.Create();
-            }
             string data = JsonConvert.SerializeObject(client);
             using (FileStream fstream = new FileStream($"{directoryInfo.FullName}.json", FileMode.OpenOrCreate))
             {

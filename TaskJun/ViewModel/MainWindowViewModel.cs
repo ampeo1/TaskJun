@@ -119,7 +119,8 @@ namespace TaskJun.ViewModel
                 {
                     OpenFileDialog openFileDialog = new OpenFileDialog();
                     openFileDialog.Multiselect = true;
-                    if(openFileDialog.ShowDialog() == true)
+                    openFileDialog.Filter = "Json file (*.json)|*.json";
+                    if (openFileDialog.ShowDialog() == true)
                     {
                         Clients.AddClients(openFileDialog.FileNames);
                         OnPropertyChanged("Clients");
