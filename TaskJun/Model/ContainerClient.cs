@@ -24,6 +24,10 @@ namespace TaskJun.Model
                 return new ObservableCollection<Client>(clients);
             }
         }
+        /*
+         * Метод извлекает из дней конкретного пользователя, если он существует в базе, 
+         * то обновляет его. А если не существует, то создаёт нового пользователя
+         */
         public void Update(Dictionary<int, List<ClientDay>> data)
         {
             foreach (int day in data.Keys)
@@ -38,7 +42,6 @@ namespace TaskJun.Model
                 }
             }
         }
-
         public void AddClients(string[] FileNames) {
             Dictionary<int, List<ClientDay>> data = WorkFiles.OpenFiles(FileNames);
             Update(data);

@@ -14,6 +14,11 @@ namespace TaskJun.ViewModel
 {
     class WorkFiles
     {
+        /*
+         * Метод считывает файлы, и так же проверят сам файл.
+         * 1)чтобы у него было название ввида day(номер дня).json.
+         * 2)чтобы в неём было правильное содержание
+         */
         private static Dictionary<int, List<ClientDay>> GetData(FileInfo[] fileInfos)
         {
             Dictionary<int, List<ClientDay>> data = new Dictionary<int, List<ClientDay>>();

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
@@ -24,6 +25,10 @@ namespace TaskJun.ViewModel
             Clients = new ContainerClient();
         }
         public ContainerClient Clients { get; set; }
+        public CartesianMapper<int> Mapper { get; set; }
+        public Brush FillMaxSteps { get; set; } = new SolidColorBrush(Colors.Green);
+        public Brush FillMinSteps { get; set; } = new SolidColorBrush(Colors.Red);
+
         public Client selectedClient = null;
         public Client SelectedClient
         {
@@ -34,12 +39,25 @@ namespace TaskJun.ViewModel
             set
             {
                 selectedClient = value;
+                ChangeMapper();
                 OnPropertyChanged("SelectedClient");
                 OnPropertyChanged("Steps");
                 OnPropertyChanged("Labels");
             }
         }
 
+        //Выделяет максимальное и минимальное количество шагов
+        private void ChangeMapper()
+        {
+            Mapper = new CartesianMapper<int>()
+            .X((value, index) => index)
+            .Y((value) => value)
+            .Fill(item =>
+                (item == selectedClient.MaxSteps ? FillMaxSteps :
+                item == selectedClient.MinSteps ? FillMinSteps : null));
+        }
+
+        //Получает данные для диаграммы 
         public SeriesCollection Steps
         {
             get
@@ -51,6 +69,7 @@ namespace TaskJun.ViewModel
                         new ColumnSeries
                         {
                             Title = "Количество шагов",
+                            Configuration = Mapper,
                             Values = new ChartValues<int>(selectedClient.GetSteps()),
                         }
                     };
@@ -61,7 +80,7 @@ namespace TaskJun.ViewModel
                 }
             }
         }
-
+        //Разметка для оси OX
         public string[] Labels
         {
             get
@@ -75,7 +94,7 @@ namespace TaskJun.ViewModel
                 }
             }
         }
-
+        //Разметка для оси OY
         public Func<int, string> Formatter
         {
             get

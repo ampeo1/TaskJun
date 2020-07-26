@@ -53,6 +53,12 @@ namespace TaskJun.Model
             }
         }
 
+        /*
+         * Возвращает цвет в зависимости от того на сколько отличаются макс и мин значения
+         * от среднего
+         * Если макс больше на 20% среднего, то возвращает зелёный цвет
+         * Если мин меньше на 20% среднего, то возвращает красный цвет
+         */
         public string Color
         {
             get
@@ -71,6 +77,7 @@ namespace TaskJun.Model
             }
             
         }
+
         public void Update(ClientDay clientDay, int day)
         {
             days.Add(day, clientDay);
